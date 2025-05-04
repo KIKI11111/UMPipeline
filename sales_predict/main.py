@@ -3,50 +3,18 @@ from pyexpat import features
 import pandas as pd
 
 from utils.util import *
-from utils.pipeline_util import *
+# from utils.pipeline_util import *
 from utils.feature_util import *
-from pipelines.conf import *
+from utils.model_util import *
+# from pipelines.conf import *
 from itertools import product
 from copy import deepcopy
-from pipelines.run_pipeline import *
+# from pipelines.run_pipeline import *
 
 import os
 import pyarrow as pa
 from pyarrow import orc as orc
 import gc
-
-def del_file(file):
-    """删除某个文件"""
-    exec_res_mark = 0
-    if os.path.exists(file):
-        print(f"remove history result: {file}")
-        exec_res_mark = os.system(f"rm -f {file}")
-    if exec_res_mark != 0:
-        raise Exception("remove file failed")
-    return exec_res_mark
-
-def mv_file(from_file, to_file):
-    """移动文件"""
-    if os.path.exists(to_file):
-        os.system(f"rm -f {to_file}")
-    print(f"mv {from_file} {to_file} ...")
-    exec_res_mark = os.system(f"mv {from_file} {to_file}")
-    print(f"mv {from_file} {to_file} done")
-    if exec_res_mark != 0:
-        raise Exception("move file failed")
-    return exec_res_mark
-
-def save_result_orc(data, result_file_tmp, result_file, result_name, rename_dict=None):
-    """将结果保存为ORC文件，先存入本地临时地址：result_file_tmp， 然后移动到result_file"""
-    if rename_dict is not None:
-        data = data.rename(columns=rename_dict)
-    print(f"saving result {result_name} ...")
-    del_file(result_file_tmp)
-    del_file(result_file)
-    tabel_raw = pa.Table.from_pandas(data, preserve_index=False)
-    orc.write_table(tabel_raw, result_file_tmp)
-    mv_file(result_file_tmp, result_file)
-    print(f"saving result {result_name} done.")
 
 
 def select_data(data_dict, dt_cols_dict, end_dt):
@@ -170,11 +138,40 @@ for predict_next_n_day in range(1, 15):
 
 
 predres = pd.concat(fres, axis=0)
+predres.to_csv('/tf/launcher/v05.csv')
+
+# save_result_orc(predres, '/tf/launcher/tmp.orc', '/root/hdfs/write/result_hive/res.orc', model_ver)
 
 
+# d = data_process_base(d, dt_col=dt_col, drop_col_list=drop_col_list)
+# d = feature_func(d, dt_col=dt_col, spring=spring, cat_columns=cat_columns, target_col=target_col
+# d = add_label(d, predict_length=predict_length, target_col=target_col, dt_col=dt_col, label_mark=label_mark)
+#
+# feature_col_list, target_col_list = get_feature_and_label_cols(d, target_col=target_col, label_mark=label_mark, feature_do_not_used_cols=feature_do_not_used_cols)
+# start_dt = datetime.strptime(modelling_data_latest_dt, '%Y-%m-%d')
+# pred_dt_list = [str(dt)[:10] for dt in pd.date_range(start_dt, start_dt+pd.Timedelta(days=predict_length))[1:]]
+# pred_res, model_preformance, model_dict = train_model_and_predict(d, model_params, validation_length, train_vaild_dt_gap, test_length, predict_length, feature_col_list, target_col_list, dt_col, retrain_to_test, retrain_to_final_predict, model_ver, businessline, scope_mark)
+# pred_res_df = pd.DataFrame(zip(pred_dt_list, pred_res), columns=['effective_dt', 'gmv'])
+#
+# pred_res_df.to_pickle(f"{tmp_res_path}/{result_name}")
 
 
-
+#
+# dynamic_template_file = '/tf/launcher/dynamic_template.py'
+# template_file = '/tf/launcher/template.py'
+# clean_tmp_result_path()
+#
+# code = open(template_file).read()
+# for f in glob("/tf/launcher/dynamic_conf_*.py"):
+#     with open(f) as fh:
+#         dynamic_conf = fh.read()
+#         conf_mark = f.split('/')[-1].split('.')[0]
+#         dynamic_conf = dynamic_conf.replace('predict_result_{model_ver_mark}.pkl', conf_mark+f'_predict_result_{model_ver_mark}')
+#     dynamic_code = dynamic_conf+'\n'*3+code
+#     with open(dynamic_template_file, 'w') as fh2:
+#         fh2.write(dynamic_code)
+#     os.system(f"python {dynamic_template_file}")
+# all_result = pd.concat([pd.read_pickle(f) for f in glob('/tf/launcher/tmp_result/*.pkl')], axis=0)
 
 
 
