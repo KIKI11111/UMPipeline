@@ -192,16 +192,16 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from causalml.metrics import auuc_score, plot_gain, plot_lift, plot_qini, qini_score, get_qini, get_cumlift
-from sklift.viz.base import plot_uplift_by_percentile
-
-from sklift.metrics import qini_auc_score
-from sklift.viz import plot_qini_curve
-import matplotlib.pyplot as plt
-from sklift.metrics.metrics import uplift_by_percentile
-from sklift.viz.base import plot_treatment_balance_curve
-from sklift.viz.base import plot_uplift_curve
-from sklift.metrics.metrics import uplift_auc_score
-from sklift.metrics.metrics import uplift_curve
+# from sklift.viz.base import plot_uplift_by_percentile
+#
+# from sklift.metrics import qini_auc_score
+# from sklift.viz import plot_qini_curve
+# import matplotlib.pyplot as plt
+# from sklift.metrics.metrics import uplift_by_percentile
+# from sklift.viz.base import plot_treatment_balance_curve
+# from sklift.viz.base import plot_uplift_curve
+# from sklift.metrics.metrics import uplift_auc_score
+# from sklift.metrics.metrics import uplift_curve
 
 
 def get_treatment_comp_data(data, treatment):
@@ -216,9 +216,9 @@ def get_auuc_score(data, treatment, normalize):
     return auuc_score(d, 'label', 'treatment', normalize=normalize)
 
 
-def get_qini_auc_score(data, treatment, normalize):
-    d = get_treatment_comp_data(data, treatment)
-    return qini_auc_score(d, 'label', 'treatment', normalize=normalize)
+# def get_qini_auc_score(data, treatment, normalize):
+#     d = get_treatment_comp_data(data, treatment)
+#     return qini_auc_score(d, 'label', 'treatment', normalize=normalize)
 
 
 def get_qini_score(data, treatment, normalize):
@@ -246,17 +246,17 @@ def plt_qini(data, treatment, normalize):
     return plot_qini(d, 'label', 'treatment', normalize=normalize)
 
 
-def plt_qini_curve(data, treatment_list, uplift_col):
-    for treatment in treatment_list:
-        d = get_treatment_comp_data(data, treatment)
-        plot_qini_curve(d['label'], d[f'uplift_{treatment}'], d['treatment'], perfect=False)
+# def plt_qini_curve(data, treatment_list, uplift_col):
+#     for treatment in treatment_list:
+#         d = get_treatment_comp_data(data, treatment)
+#         plot_qini_curve(d['label'], d[f'uplift_{treatment}'], d['treatment'], perfect=False)
 
 
-def plot_uplift_percentile(data, treatment_list):
-    for treatment in treatment_list:
-        d = get_treatment_comp_data(data, treatment)
-        plot_uplift_by_percentile(d['label'], d[f'uplift_{treatment}'], d['treatment'], strategy='overall', bins=10,
-                                  kind='bar', string_percentiles=True)
+# def plot_uplift_percentile(data, treatment_list):
+#     for treatment in treatment_list:
+#         d = get_treatment_comp_data(data, treatment)
+#         plot_uplift_by_percentile(d['label'], d[f'uplift_{treatment}'], d['treatment'], strategy='overall', bins=10,
+#                                   kind='bar', string_percentiles=True)
 
 
 def calc_qini(df, treatment, mark, keep_random=False):

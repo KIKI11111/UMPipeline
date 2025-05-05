@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from funcs import *
+from evalution import *
 
 if __name__ == '__main__':
 
@@ -44,10 +45,10 @@ if __name__ == '__main__':
     models = dict()
     model = get_model(df, features+[treatment_col], [target_col], params)
     predict = get_predict(model, df)
+    print(predict.head())
+    auuc = get_auuc(predict)
+    print(auuc)
 
 
-    # def get_auuc_score(data, treatment, normalize):
-    #     d = get_treatment_comp_data(data, treatment)
-    #     return auuc_score(d, 'label', 'treatment', normalize=normalize)
-    #
+
 

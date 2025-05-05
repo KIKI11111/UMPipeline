@@ -18,3 +18,4 @@
 # # 增加新列
 # alter table ** add columns(col4 string comment '') cascade;
 # alter table ** add columns(col5 ARRAY<bigint> comment '') cascade;
+

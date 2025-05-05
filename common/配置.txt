@@ -1,0 +1,13 @@
+
+homebrew
+
+anaconda
+
+pycharm CE
+
+编辑器
+
+虚拟环境，连接conda
+
+
+

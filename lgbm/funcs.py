@@ -2,20 +2,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import lightgbm as lgb
 from sklearn.metrics import roc_auc_score, accuracy_score
-
-
-def get_predict(model, data):
-    treatment_list = list(range(3, 11))
-    treatment_col_list = [f'uplift_{t}' for t in treatment_list]
-    treat = data['treatment'].copy()
-    data['treatment'] = 0
-    data['base_p'] = model.predict(data[model.feature_name_])
-    for t in treatment_list:
-        data['treatment'] = t
-        data[f'uplift_{t}'] = model.predict(data[model.feature_name_]) - data['base_p']
-    data['treatment'] = treat
-    return data
-
+from evalution import *
+from feature_imp import *
+from psm import *
 
 
 
@@ -24,8 +13,8 @@ def get_model(data, feature_cols,  target_col, params):
     train_d, test_d = train_test_split(data, test_size=0.2)
     train_d, val_d = train_test_split(train_d, test_size=0.2)
 
-    train_d_set = lgb.Dataset(data=train_d[feature_cols], label=train_d[[target_col]])
-    val_d_set = lgb.Dataset(data=val_d[feature_cols], label=val_d[[target_col]])
+    train_d_set = lgb.Dataset(data=train_d[feature_cols], label=train_d[target_col])
+    val_d_set = lgb.Dataset(data=val_d[feature_cols], label=val_d[target_col])
     booster = lgb.train(params, train_d_set, valid_sets=[train_d_set, val_d_set])
 
     # 在测试集上进行预测
@@ -40,3 +29,26 @@ def get_model(data, feature_cols,  target_col, params):
     print(f"Accuracy: {accuracy}")
 
     return booster
+
+def get_predict(model, data):
+    treatment_list = list(range(3, 11))
+    treatment_col_list = [f'uplift_{t}' for t in treatment_list]
+    cols = ['id'] + ['treatment', 'label'] + treatment_col_list
+    treat = data['treatment'].copy()
+    data['treatment'] = 0
+    data['base_p'] = model.predict(data[model.feature_name()])
+    for t in treatment_list:
+        data['treatment'] = t
+        data[f'uplift_{t}'] = model.predict(data[model.feature_name()]) - data['base_p']
+    data['treatment'] = treat
+    return data[cols]
+
+def get_auuc(data):
+    treatment_list = list(range(3, 4))
+    auuc_score = {}
+    for t in treatment_list:
+        auuc = get_auuc_score(data, t, normalize=True)
+        auuc_score[t] = auuc[f'uplift_{t}']
+    return auuc_score
+
+

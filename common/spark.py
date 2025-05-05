@@ -46,6 +46,9 @@ if __name__ == '__main__':
     result = spark.createDataFrame(result_rdd)
     result.createReplaceTempView("result")
 
+    # spark dataframe
+
+
 
     # 写入结果表
     insert_table_sql = f"""
