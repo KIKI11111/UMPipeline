@@ -5,7 +5,7 @@ if __name__ == '__main__':
     # 样本数量
     n_samples = 1000
     # 特征数量
-    n_features = 20
+    n_features = 10
     # 生成 ID 列
     ids = np.arange(1, n_samples + 1)
     # 生成 20 个特征列
@@ -19,6 +19,8 @@ if __name__ == '__main__':
     data = np.hstack((ids.reshape(-1, 1), features, treatment.reshape(-1, 1), label.reshape(-1, 1)))
     df = pd.DataFrame(data, columns=columns)
     print(df.head())
+
+
 
 
 
