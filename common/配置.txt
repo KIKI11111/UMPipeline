@@ -1,13 +1,18 @@
 
 homebrew
 
-anaconda
+anaconda安装
+https://blog.csdn.net/wq_ocean_/article/details/103889237
+
+添加虚拟环境
+conda env list
+conda activate **
+https://blog.csdn.net/NBDwo/article/details/121456958
+https://blog.csdn.net/qq_40459977/article/details/131947671
 
 pycharm CE
 
-编辑器
 
-虚拟环境，连接conda
 
 
 
